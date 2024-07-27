@@ -1,0 +1,8 @@
+Maintainer: Whited00r
+Name: Configurator
+Package: com.whited00r.configurator
+Section: Whited00r
+Version: 0.1.9.9-23
+Architecture: iphoneos-arm
+Description: configurating your stuff since 2012!
+Sponsor: Whited00r

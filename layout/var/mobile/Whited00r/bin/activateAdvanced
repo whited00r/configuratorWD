@@ -1,0 +1,42 @@
+#!/bin/bash
+sys_plist=$(uname -i)
+base=/var/mobile/Whited00r
+lang=$(plutil -key AppleLocale /var/mobile/Library/Preferences/.GlobalPreferences.plist)
+langFile=$(if [[ -f "/System/Library/PreferenceBundles/Configurator.bundle/Configurator.plist" ]];
+then
+if [[ -f "/System/Library/PreferenceBundles/Configurator.bundle/$lang.lproj/Configurator.strings" ]];
+then
+echo "/System/Library/PreferenceBundles/Configurator.bundle/$lang.lproj/Configurator.strings"
+else
+echo "/System/Library/PreferenceBundles/Configurator.bundle/en.lproj/Configurator.strings";
+fi
+
+elif [[ "/Library/PreferenceBundles/Configurator.bundle/Configurator.plist" ]];
+then
+if [[ -f "/Library/PreferenceBundles/Configurator.bundle/$lang.lproj/Configurator.strings" ]];
+then
+echo "/Library/PreferenceBundles/Configurator.bundle/$lang.lproj/Configurator.strings";
+else echo "/Library/PreferenceBundles/Configurator.bundle/en.lproj/Configurator.strings";
+fi
+
+fi
+)
+warningTitle=$(plutil -key ADVANCED_WARNING_TITLE "$langFile")
+warningBody=$(plutil -key ADVANCED_WARNING_BODY "$langFile")
+warningAccept=$(plutil -key ADVANCED_WARNING_ACCEPT "$langFile")
+warningCancel=$(plutil -key ADVANCED_WARNING_CANCEL "$langFile")
+sbalert -t "$warningTitle" -m "$warningBody" -d "$warningAccept" -a "$warningCancel" 
+
+answer="$?"
+
+if [[ "$answer" == "0" ]];
+then
+plutil -type json -key capabilities -key advancedConfig -1 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null
+chmod 4755 $base/bin/rootme
+chown root:wheel $base/bin/rootme
+chmod 775 $base/bin/rootthis
+chmod 775 $base/bin/root-check
+cp $base/bin/root-check /usr/bin/root-check
+chmod 775 /usr/bin/root-check
+#killall SpringBoard #Hopefully not needed now?
+fi

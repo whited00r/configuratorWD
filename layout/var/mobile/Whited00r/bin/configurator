@@ -1,0 +1,1313 @@
+#!/bin/bash
+
+#Pretty straight forward, the script sorts what is on to the enabled list, and what is off to the disabled list, which is then read through, calling off the function for either enable/disable so, wallpaperdisable, or wallpaperenable :)
+#I had already put a lot of the code in a while back, which doesn't really need any improvements aside from fixing the cleanup function and adding in a few other things.
+
+
+#base=/var/mobile/ArchetypeCore/config
+daemon_base="/System/Library/LaunchDaemons"
+sys_plist=$(uname -i)
+
+advancedConfig=""
+if [[ ! -z `plutil -type json -key capabilities -key advancedConfig /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist 2>>/dev/null` ]];
+  then
+
+advancedConfig=$(plutil -type json -key capabilities -key advancedConfig /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist)
+fi
+
+lang=$(plutil -key AppleLocale /var/mobile/Library/Preferences/.GlobalPreferences.plist)
+langFile=$(if [[ -f "/System/Library/PreferenceBundles/Configurator.bundle/Configurator.plist" ]];
+then
+if [[ -f "/System/Library/PreferenceBundles/Configurator.bundle/$lang.lproj/Configurator.strings" ]];
+then
+echo "/System/Library/PreferenceBundles/Configurator.bundle/$lang.lproj/Configurator.strings"
+else
+echo "/System/Library/PreferenceBundles/Configurator.bundle/en.lproj/Configurator.strings";
+fi
+
+elif [[ "/Library/PreferenceBundles/Configurator.bundle/Configurator.plist" ]];
+then
+if [[ -f "/Library/PreferenceBundles/Configurator.bundle/$lang.lproj/Configurator.strings" ]];
+then
+echo "/Library/PreferenceBundles/Configurator.bundle/$lang.lproj/Configurator.strings";
+else echo "/Library/PreferenceBundles/Configurator.bundle/en.lproj/Configurator.strings";
+fi
+
+fi
+)
+
+
+#Some checks for needed tools for the license to work. 
+pre-flight()
+{
+
+if [[ ! `which sed` == "/bin/sed" ]];
+then echo "Oh no, sed not found"; sbalert -t "Configurator Error" -m "Looks like you don't have sed"; exit;
+fi
+
+if [[ ! `which openssl` == "/usr/bin/openssl" ]];
+then echo "Uh oh, openssl not found"; sbalert -t "Configurator Error" -m "Looks like you don't have openssl"; exit;
+fi
+
+if [[ ! `which sbdevice` == "/usr/bin/sbdevice" ]];
+then echo "No sbdevice found"; sbalert -t "Configurator Error" -m "Looks like you don't have sbdevice"; exit;
+fi
+
+}
+
+pre-flight
+
+#Needed for at least some license protection for only d00r use... security through shitty obscurity that didn't obscure.
+onion="C"
+ion="p"
+trio="l"
+messy="$variable"
+cabbage="$onion"
+parrot="a"
+cannon="$parrot"
+fish="$cannon"
+slug="$onion"
+cheeseCurd="n"
+manlyMan="h"
+slightlyScared="$manlyMan"
+peedMyself="$slug"
+iFoundAPig="$cheeseCurd"
+sloth="$onion"
+hamster="t"
+bunny="$hamster"
+terminateDeath="r"
+slowPoke=$bunny
+socks=$slowPoke
+lowAsYouCanGo="c"
+sorry="k"
+lorry="F"
+crackers="$sorry"
+brackers="$lowAsYouCanGo"
+but=$crackers
+you="D"
+slew="M"
+shouldnt=$but
+be=$you
+reading=$shouldnt
+this=$shoudnt
+okay="$be"
+now="i"
+sow="v"
+bow="t"
+cow=$be
+iDont=$this
+uDont="R"
+hate=$now
+stinkyFeet="8"
+youFor=$shouldnt
+readingThis=$now
+assWipe="W"
+candyCorn="Oh"
+
+butReally=$now
+sugarCoatIt="u"
+pleaseStopCracking="s"
+myCodeNow="$pleaseStopCracking"
+
+
+cryptWD=$(echo "`sbdevice -u`-$sloth$fish$iFoundAPig$slowPoke$cabbage$terminateDeath$cannon$lowAsYouCanGo$but$be$now$myCodeNow" | openssl dgst -sha1 -hmac "PlsNo")
+cryptBetaLevel1=$(echo "`sbdevice -u`-OnlineNLovinIt" | openssl dgst -sha1 -hmac "TheMooseIsWatching")
+cryptBetaLevel2=$(echo "`sbdevice -u`-IMMATESTINSTUFF-$cryptBetaLevel1" | openssl dgst -sha1 -hmac "HOWBOUTYOU")
+check_license()
+{
+#Just, you know, safety
+
+if [[ ! -f "/var/mobile/Whited00r/$cryptWD" ]];
+ then 
+if [[ ! -f "/var/mobile/Whited00r/$cryptBetaLevel2" ]];
+then echo "Oh no D: no valid license :("; sbalert -t "OH no" -m "No valid license found :( This only works with Whited00r." -q 3;
+ killall SpringBoard; exit;
+fi
+fi
+
+}
+
+
+
+sys_plist=$(uname -i)
+
+command="$1"
+
+Autoinstall()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.saurik.Cydia.Startup.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.saurik.Cydia.Startup.plist  >>/dev/null 2>&1
+else echo "Unknown argument for Autoinstall: $1"
+fi
+}
+
+Folders()
+{
+if [[ "$1" == "enable" ]];
+then
+
+if [[ -f "/Library/MobileSubstrate/DynamicLibraries/Folders.disabled" ]];
+   then mv "/Library/MobileSubstrate/DynamicLibraries/Folders.disabled" "/Library/MobileSubstrate/DynamicLibraries/Folders.dylib";
+plutil -type json -key capabilities -key ios3Folders -1 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null
+fi
+
+
+elif [[ "$1" == "disable" ]];
+then
+
+if [[ -f "/Library/MobileSubstrate/DynamicLibraries/Folders.dylib" ]];
+   then mv "/Library/MobileSubstrate/DynamicLibraries/Folders.dylib" "/Library/MobileSubstrate/DynamicLibraries/Folders.disabled";
+plutil -type json -key capabilities -key ios3Folders -0 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null
+fi
+else echo "Unknown argument to Folders: $1";
+fi
+
+}
+
+MobileMe()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.apple.AOSNotification.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.AOSNotification.plist >>/dev/null 2>&1
+else echo "Unknown argument for MobileMe: $1";
+fi
+}
+
+Multitasking()
+{
+if [[ "$1" == "Multitasking" ]];
+then
+mv "/Library/MobileSubstrate/DynamicLibraries/Multitasking.disabled" "/Library/MobileSubstrate/DynamicLibraries/Multitasking.dylib" >>/dev/null;
+mv "/Library/MobileSubstrate/DynamicLibraries/iOS7Switcher.dylib" "/Library/MobileSubstrate/DynamicLibraries/iOS7Switcher.disabled" >>/dev/null;
+plutil -type json -key capabilities -key ios3multitasking -1 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null
+
+if [[ -z $advancedConfig ]];
+	then
+plutil -key Backgrounder -1 /var/mobile/Library/Preferences/com.whited00r.configurator.plist >>/dev/null
+plutil -key snapShotApps -0 /var/mobile/Library/Preferences/com.whited00r.wd7ui.plist >>/dev/null
+Backgrounder enable
+fi
+
+elif [[ "$1" == "iOS7Style" ]];
+then 
+mv "/Library/MobileSubstrate/DynamicLibraries/Multitasking.dylib" "/Library/MobileSubstrate/DynamicLibraries/Multitasking.disabled" >>/dev/null; 
+mv "/Library/MobileSubstrate/DynamicLibraries/iOS7Switcher.disabled" "/Library/MobileSubstrate/DynamicLibraries/iOS7Switcher.dylib" >>/dev/null;
+plutil -type json -key capabilities -key ios3multitasking -0 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null
+if [[ -z $advancedConfig ]];
+then
+plutil -key Backgrounder -0 /var/mobile/Library/Preferences/com.whited00r.configurator.plist >>/dev/null
+plutil -key snapShotApps -1 /var/mobile/Library/Preferences/com.whited00r.wd7ui.plist >>/dev/null
+Backgrounder disable
+fi
+
+elif [[ "$1" == "disable" ]];
+then
+mv "/Library/MobileSubstrate/DynamicLibraries/Multitasking.dylib" "/Library/MobileSubstrate/DynamicLibraries/Multitasking.disabled";
+mv "/Library/MobileSubstrate/DynamicLibraries/iOS7Switcher.dylib" "/Library/MobileSubstrate/DynamicLibraries/iOS7Switcher.disabled" >>/dev/null;
+plutil -type json -key capabilities -key ios3multitasking -0 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null
+
+if [[ -z $advancedConfig ]];
+	then
+plutil -key Backgrounder -0 /var/mobile/Library/Preferences/com.whited00r.configurator.plist >>/dev/null
+plutil -key snapShotApps -0 /var/mobile/Library/Preferences/com.whited00r.wd7ui.plist >>/dev/null
+Backgrounder disable
+fi
+else echo "Unknown argument for Multitasking: $1";
+fi
+}
+
+Notifications()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.apple.apsd.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.apsd.plist >>/dev/null 2>&1
+else echo "Unknown argument for Notifications: $1";
+fi
+}
+
+Obliteration()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.apple.mobile.obliteration.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.mobile.obliteration.plist >>/dev/null 2>&1
+else echo "Unknown argument for Obliteration: $1";
+fi
+}
+
+SIM()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.apple.datamigrator.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.datamigrator.plist >>/dev/null 2>&1
+else echo "Unknown argument for SIM: $1";
+fi
+}
+
+Shadows()
+{
+if [[ "$1" == "enable" ]];
+then
+find /System/Library/CoreServices/SpringBoard.app | grep Wallpaper | grep Shadow | sed 's/.png$//;s/.disabled$//' | while read shadow; do
+if [[ ! -z "$shadow" ]];
+then
+   mv "$shadow.disabled" "$shadow.png";
+fi
+done
+
+
+elif [[ "$1" == "disable" ]];
+then
+find /System/Library/CoreServices/SpringBoard.app | grep Wallpaper | grep Shadow | sed 's/.png$//;s/.disabled$//' | while read shadow; do
+if [[ ! -z "$shadow" ]];
+then
+   mv "$shadow.png" "$shadow.disabled";
+fi
+done
+else echo "Unknown argument for Shadows: $1";
+fi
+}
+
+Spotlight()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.apple.searchd.plist >>/dev/null 2>&1
+launchctl load -w $daemon_base/com.apple.search.appindexer.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.searchd.plist >>/dev/null 2>&1
+launchctl unload -w $daemon_base/com.apple.search.appindexer.plist >>/dev/null 2>&1
+else echo "Unknown argument for Spotlight: $1";
+fi
+}
+
+Sync()
+{
+if [[ "$1" == "enable" ]];
+then 
+launchctl load -w $daemon_base/com.apple.dataaccess.dataaccessd.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.dataaccess.dataaccessd.plist >>/dev/null 2>&1
+else echo "Unknown argument for Sync: $1";
+fi
+}
+
+Tethering()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.apple.MobileInternetSharing.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.MobileInternetSharing.plist >>/dev/null 2>&1
+else echo "Unknown argument for Tethering: $1";
+fi
+}
+
+VPN()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.apple.racoon.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.racoon.plist >>/dev/null 2>&1
+else echo "Unknown argument for VPN: $1";
+fi
+}
+
+HomeWallpaper()
+{
+if [[ "$1" == "enable" ]];
+then
+
+if [[ -f "/Library/MobileSubstrate/DynamicLibraries/HomeWallpaper.disabled" ]];
+   then mv "/Library/MobileSubstrate/DynamicLibraries/HomeWallpaper.disabled" "/Library/MobileSubstrate/DynamicLibraries/HomeWallpaper.dylib";
+plutil -type json -key capabilities -key ios3Wallpaper -1 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null
+fi
+
+#Restoring the blur man. Sweet stuff?
+if [[ ! -f "/System/Library/CoreServices/SpringBoard.app/SBDockBG_backup.png" ]];
+  then mv "/System/Library/CoreServices/SpringBoard.app/SBDockBG.png" "/System/Library/CoreServices/SpringBoard.app/SBDockBG_backup.png";
+fi
+ln -s "/var/mobile/Library/AppSwitcherBG_light.png" "/System/Library/CoreServices/SpringBoard.app/SBDockBG.png"
+
+elif [[ "$1" == "disable" ]];
+then
+
+if [[ -f "/Library/MobileSubstrate/DynamicLibraries/HomeWallpaper.dylib" ]];
+   then mv "/Library/MobileSubstrate/DynamicLibraries/HomeWallpaper.dylib" "/Library/MobileSubstrate/DynamicLibraries/HomeWallpaper.disabled";
+plutil -type json -key capabilities -key ios3Wallpaper -0 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null
+fi
+
+#Removing dock blurs.
+if [[ -f "/System/Library/CoreServices/SpringBoard.app/SBDockBG_backup.png" ]];
+  then
+    rm "/System/Library/CoreServices/SpringBoard.app/SBDockBG.png"
+   mv "/System/Library/CoreServices/SpringBoard.app/SBDockBG_backup.png" "/System/Library/CoreServices/SpringBoard.app/SBDockBG.png";
+fi
+
+else echo "Unknown argument for Wallpaper: $1";
+fi
+}
+
+Count()
+{
+if [[ "$1" == "enable" ]];
+then
+#Some code to enable character counting here
+echo "Blah this needs to be here for testing"
+elif [[ "$1" == "disable" ]];
+then
+#some code to disable character counting here
+echo "Blah this needs to be here for testing"
+else echo "Unknown argument for Count: $1";
+fi
+}
+
+
+Accessory()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.apple.accessoryd.plist >>/dev/null 2>&1
+launchctl load -w $daemon_base/com.apple.iapd.plist >>/dev/null 2>&1
+launchctl load -w $daemon_base/com.apple.iap2d.plist >>/dev/null 2>&1
+launchctl load -w $daemon_base/com.apple.iapauthd.plist >>/dev/null 2>&1
+launchctl load -w $daemon_base/com.apple.iaptransportd.plist >>/dev/null 2>&1
+launchctl load -w $daemon_base/com.apple.mobile.accessory_device_arbitrator.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.accessoryd.plist >>/dev/null 2>&1
+launchctl unload -w $daemon_base/com.apple.iapd.plist >>/dev/null 2>&1
+launchctl unload -w $daemon_base/com.apple.iap2d.plist >>/dev/null 2>&1
+launchctl unload -w $daemon_base/com.apple.iapauthd.plist >>/dev/null 2>&1
+launchctl unload -w $daemon_base/com.apple.iaptransportd.plist >>/dev/null 2>&1
+launchctl unload -w $daemon_base/com.apple.mobile.accessory_device_arbitrator.plist >>/dev/null 2>&1
+else echo "Unknown argument for Accessory: $1";
+fi
+}
+
+AdminLite()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.apple.AdminLite.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.AdminLite.plist >>/dev/null 2>&1
+else echo "Unknown argument for Adminlite: $1"
+fi
+}
+
+
+
+AlbumArtwork()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.apple.graphicsservices.sample.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.graphicsservices.sample.plist >>/dev/null 2>&1
+else echo "Unknown argument for AlbumArtwork: $1";
+fi
+}
+
+PasteBoard()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.apple.UIKit.pasteboardd.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.UIKit.pasteboardd.plist >>/dev/null 2>&1
+else echo "Unknown argument for Pasteboard: $1";
+fi
+}
+
+VoiceControl()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.apple.scrod.plist >>/dev/null 2>&1
+launchctl load -w $daemon_base/com.apple.VoiceOverTouch >>/dev/null 2>&1
+launchctl load -w $daemon_base/com.apple.voiced >>/dev/null 2>&1
+launchctl load -w $daemon_base/com.apple.vsassetd.plist >>/dev/null 2>&1
+plutil -type json -key capabilities -key voice-control -1 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.scrod.plist >>/dev/null 2>&1 
+launchctl unload -w $daemon_base/com.apple.VoiceOverTouch >>/dev/null 2>&1
+launchctl unload -w $daemon_base/com.apple.voiced >>/dev/null 2>&1
+launchctl unload -w $daemon_base/com.apple.vsassetd.plist >>/dev/null 2>&1
+plutil -type json -key capabilities -key voice-control -0 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null 2>&1
+else echo "Unknown argument for VoiceControl: $1";
+fi
+}
+
+
+Backgrounder()
+{
+if [[ "$1" == "disable" ]];
+then
+if [[ -f /Library/MobileSubstrate/DynamicLibraries/Backgrounder.dylib ]];
+	then mv /Library/MobileSubstrate/DynamicLibraries/Backgrounder.dylib /Library/MobileSubstrate/DynamicLibraries/Backgrounder.disabled
+fi
+plutil -type json -key capabilities -key backgrounder -remove /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null 2>&1
+elif [[ "$1" == "enable" ]];
+then
+if [[ -f /Library/MobileSubstrate/DynamicLibraries/Backgrounder.disabled ]];
+	then mv /Library/MobileSubstrate/DynamicLibraries/Backgrounder.disabled /Library/MobileSubstrate/DynamicLibraries/Backgrounder.dylib
+
+fi
+plutil -key Sara -0 /var/mobile/Library/Preferences/com.whited00r.configurator.plist
+Sara disable
+plutil -type json -key capabilities -key backgrounder -1 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null 2>&1
+else echo "Unknown argument for Backgrounder: $1";
+fi
+}
+
+#Oooohhh look a nice little hack
+BufferFix()
+{
+if [[ "$1" == "enable" ]];
+then 
+plutil -type json -key capabilities -key 720p -0 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+plutil -type json -key capabilities -key 720p -1 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null 2>&1
+else echo "Unknown argument for BufferFix: $1"
+fi
+
+}
+
+VideoSwitch()
+{
+if [[ "$1" == "enable" ]];
+then
+  if [[ -f /Library/MobileSubstrate/DynamicLibraries/videoswitch.disabled ]];
+	then mv /Library/MobileSubstrate/DynamicLibraries/videoswitch.disabled /Library/MobileSubstrate/DynamicLibraries/videoswitch.dylib;
+fi
+elif [[ "$1" == "disable" ]];
+then 
+  if [[ -f /Library/MobileSubstrate/DynamicLibraries/videoswitch.dylib ]];
+	then mv /Library/MobileSubstrate/DynamicLibraries/videoswitch.dylib /Library/MobileSubstrate/DynamicLibraries/videoswitch.disabled;
+fi
+else echo "Unknown argument for VideoSwitch: $1";
+fi
+
+
+}
+
+WDiOS6Menu()
+{
+if [[ "$1" == "enable" ]];
+then
+  if [[ -f /Library/MobileSubstrate/DynamicLibraries/WDiOS6Menu.disabled ]];
+	then mv /Library/MobileSubstrate/DynamicLibraries/WDiOS6Menu.disabled /Library/MobileSubstrate/DynamicLibraries/WDiOS6Menu.dylib;
+fi
+elif [[ "$1" == "disable" ]];
+then 
+  if [[ -f /Library/MobileSubstrate/DynamicLibraries/WDiOS6Menu.dylib ]];
+	then mv /Library/MobileSubstrate/DynamicLibraries/WDiOS6Menu.dylib /Library/MobileSubstrate/DynamicLibraries/WDiOS6Menu.disabled;
+fi
+else echo "Unknown argument for WDiOS6Menu: $1";
+fi
+
+}
+
+Sara()
+{
+if [[ "$1" == "enable" ]];
+then
+
+  if [[ -f /Library/MobileSubstrate/DynamicLibraries/WDSara.disabled ]];
+    then
+    if [[ ! `plutil -key Backgrounder -0 /var/mobile/Library/Preferences/com.whited00r.configurator.plist` == 1 ]];
+  then
+  echo "Enabling Sara"
+	 mv /Library/MobileSubstrate/DynamicLibraries/WDSara.disabled /Library/MobileSubstrate/DynamicLibraries/WDSara.dylib;
+  fi
+fi
+elif [[ "$1" == "disable" ]];
+then 
+  if [[ -f /Library/MobileSubstrate/DynamicLibraries/WDSara.dylib ]];
+	then mv /Library/MobileSubstrate/DynamicLibraries/WDSara.dylib /Library/MobileSubstrate/DynamicLibraries/WDSara.disabled;
+fi
+else echo "Unknown argument for Sara: $1";
+fi
+
+}
+
+CameraGrabber()
+{
+if [[ "$1" == "enable" ]];
+then
+  if [[ -f /Library/MobileSubstrate/DynamicLibraries/CameraGrabber.disabled ]];
+	then mv /Library/MobileSubstrate/DynamicLibraries/CameraGrabber.disabled /Library/MobileSubstrate/DynamicLibraries/CameraGrabber.dylib;
+fi
+elif [[ "$1" == "disable" ]];
+then 
+  if [[ -f /Library/MobileSubstrate/DynamicLibraries/CameraGrabber.dylib ]];
+	then mv /Library/MobileSubstrate/DynamicLibraries/CameraGrabber.dylib /Library/MobileSubstrate/DynamicLibraries/CameraGrabber.disabled;
+fi
+else echo "Unknown argument for CameraGrabber: $1";
+fi
+
+}
+
+
+
+Bruce()
+{
+if [[ "$1" == "enable" ]];
+then
+plutil -type json -key capabilities -key Bruce -1 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null 2>&1
+  if [[ -f /Library/MobileSubstrate/DynamicLibraries/Bruce.disabled ]];
+	then mv /Library/MobileSubstrate/DynamicLibraries/Bruce.disabled /Library/MobileSubstrate/DynamicLibraries/Bruce.dylib;
+
+fi
+elif [[ "$1" == "disable" ]];
+then 
+plutil -type json -key capabilities -key Bruce -0 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null 2>&1
+  if [[ -f /Library/MobileSubstrate/DynamicLibraries/Bruce.dylib ]];
+	then mv /Library/MobileSubstrate/DynamicLibraries/Bruce.dylib /Library/MobileSubstrate/DynamicLibraries/Bruce.disabled;
+fi
+else echo "Unknown argument for Bruce: $1";
+fi
+
+}
+
+roundSwitches()
+{
+if [[ "$1" == "enable" ]];
+then
+  if [[ -f /Library/MobileSubstrate/DynamicLibraries/RoundToggles.disabled ]];
+  then mv /Library/MobileSubstrate/DynamicLibraries/RoundToggles.disabled /Library/MobileSubstrate/DynamicLibraries/RoundToggles.dylib;
+fi
+elif [[ "$1" == "disable" ]];
+then 
+  if [[ -f /Library/MobileSubstrate/DynamicLibraries/RoundToggles.dylib ]];
+  then mv /Library/MobileSubstrate/DynamicLibraries/RoundToggles.dylib /Library/MobileSubstrate/DynamicLibraries/RoundToggles.disabled;
+fi
+else echo "Unknown argument for RoundToggles: $1";
+fi
+
+}
+
+#Little bit cleaner code?
+AdBlock()
+{
+if [[ "$1" == "enable" ]];
+then
+cp /var/mobile/Whited00r/resources/hosts /etc/hosts;
+elif [[ "$1" == "disable" ]];
+then
+cp /etc/hosts-bk /etc/hosts;
+else echo "Unknown argument for AdBlock: $1";
+fi
+}
+
+
+
+
+#Hmmmm...
+AppStoreCheck()
+{
+if [[ "$1" == "enable" ]];
+then launchctl load -w $daemon_base/com.apple.daily.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then launchctl unload -w $daemon_base/com.apple.daily.plist >>/dev/null 2>&1
+else echo "Unknown argument for AppStoreCheck: $1";
+fi
+
+
+}
+
+AssistiveTouch()
+{
+if [[ "$1" == "enable" ]];
+then 
+launchctl load -w $daemon_base/com.apple.assistivetouchd.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then launchctl unload -w $daemon_base/com.apple.assistivetouchd.plist >>/dev/null 2>&1
+else echo "Unknown argument for AssistiveTouch: $1";
+fi
+
+}
+
+
+Midi(){
+if [[ "$1" == "enable" ]];
+then launchctl load -w $daemon_base/com.apple.midiserver-ios.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then launchctl unload -w $daemon_base/com.apple.midiserver-ios.plist >>/dev/null 2>&1
+else echo "Unknown argument for Midi: $1";
+fi
+
+}
+
+
+iTunesCloud()
+{
+if [[ "$1" == "enable" ]];
+then launchctl load -w $daemon_base/com.apple.itunescloudd.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then launchctl unload -w $daemon_base/com.apple.itunescloudd.plist >>/dev/null 2>&1
+else echo "Unknown argument for iTunesCloud: $1";
+fi
+
+
+}
+
+
+ProfileJanitor()
+{
+if [[ "$1" == "enable" ]];
+then launchctl load -w $daemon_base/com.apple.profile_janitor.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then launchctl unload -w $daemon_base/com.apple.profile_janitor.plist >>/dev/null 2>&1
+else echo "Unknown argument for ProfileJanitor: $1";
+fi
+
+
+}
+
+AirPrint()
+{
+if [[ "$1" == "enable" ]];
+then launchctl load -w $daemon_base/com.apple.printd.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then launchctl unload -w $daemon_base/com.apple.printd.plist >>/dev/null 2>&1
+else echo "Unknown argument for AirPrint: $1";
+fi
+
+}
+
+
+#Ahhhhh, a nice big set of stuff to speed up the device.
+BlueTooth()
+{
+if [[ "$1" == "enable" ]];
+then 
+launchctl load -w $daemon_base/com.apple.BTServer.plist >>/dev/null 2>&1
+launchctl load -w $daemon_base/com.apple.BTServer.avrcp.plist >>/dev/null 2>&1
+launchctl load -w $daemon_base/com.apple.BTServer.map.plist >>/dev/null 2>&1
+launchctl load -w $daemon_base/com.apple.BlueTool.plist >>/dev/null 2>&1
+
+plutil -type json -key capabilities -key bluetooth -1 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.BTServer.avrcp.plist >>/dev/null 2>&1
+launchctl unload -w $daemon_base/com.apple.BTServer.map.plist >>/dev/null 2>&1
+launchctl unload -w $daemon_base/com.apple.BlueTool.plist >>/dev/null 2>&1
+launchctl unload -w $daemon_base/com.apple.BTServer.plist >>/dev/null 2>&1
+plutil -type json -key capabilities -key bluetooth -0 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null 2>&1
+else echo "Unknown argument for BlueTooth: $1";
+fi
+
+}
+
+
+#Oh yay, even better :D
+Location()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.apple.locate.plist >>/dev/null 2>&1
+launchctl load -w $daemon_base/com.apple.locationd.plist >>/dev/null 2>&1
+plutil -type json -key capabilities -key location-services -1 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null 2>&1
+plutil -type json -key capabilities -key gps -1 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.locate.plist >>/dev/null 2>&1
+launchctl unload -w $daemon_base/com.apple.locationd.plist >>/dev/null 2>&1
+plutil -type json -key capabilities -key location-services -0 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null 2>&1
+plutil -type json -key capabilities -key gps -0 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null 2>&1
+else echo "Unknown argument for Location: $1";
+fi
+
+}
+
+
+#See this, this is what will give you the most speed possible on any device. Disabling anything possible without crashing the device :P
+CommCenter()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.apple.CommCenter.plist >>/dev/null 2>&1
+launchctl load -w $daemon_base/com.apple.CommCenterClassic.plist >>/dev/null 2>&1
+launchctl load -w $daemon_base/com.apple.CommCenterMobileHelper.plist >>/dev/null 2>&1
+launchctl load -w $daemon_base/com.apple.CommCenterRoothelper.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.CommCenter.plist >>/dev/null 2>&1
+launchctl unload -w $daemon_base/com.apple.CommCenterClassic.plist >>/dev/null 2>&1
+launchctl unload -w $daemon_base/com.apple.CommCenterMobileHelper.plist >>/dev/null 2>&1
+launchctl unload -w $daemon_base/com.apple.CommCenterRoothelper.plist >>/dev/null 2>&1
+else echo "Unknown argument for CommCenter: $1";
+fi
+
+}
+
+
+#Nice little thing I picked up from some vague forum.
+SmoothAnimations()
+{
+if [[ "$1" == "enable" ]];
+then
+plutil -type json -key capabilities -key launch-mode -remove /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null 2>&1
+plutil -type json -key capabilities -key launch-applications-while-animating -1 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+plutil -type json -key capabilities -key launch-applications-while-animating -remove /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null 2>&1
+plutil -type json -key capabilities -key launch-mode -value "pre-animate" /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null 2>&1
+else echo "Unknown argument for SmoothAnimations: $1"
+fi
+
+}
+
+
+#Better battery life? :)
+Powerd()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.apple.powerd.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.powerd.plist >>/dev/null 2>&1
+else echo "Unknown argument for Powerd: $1";
+fi
+
+}
+
+
+#For iPad camera connector
+CameraConnector()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.apple.mobile.storage_mounter.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.mobile.storage_mounter.plist >>/dev/null 2>&1
+else echo "Unknown argument for CameraConnector: $1";
+fi
+
+}
+
+#Meh.
+Wapic()
+{
+if [[ "$1" == "enable" ]];
+then 
+launchctl load -w $daemon_base/com.apple.wapic.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.wapic.plist >>/dev/null 2>&1
+else echo "Unknown argument for Wapic: $1";
+fi
+
+
+}
+
+
+3rdPartyMusicControls()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.apple.mediaremoted.plist >>/dev/null 2>&1
+launchctl load -w $daemon_base/com.apple.calaccessed.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.mediaremoted.plist >>/dev/null 2>&1
+launchctl unload -w $daemon_base/com.apple.calaccessed.plist >>/dev/null 2>&1
+else echo "Unknown argument for 3rdPartyMusicControls: $1";
+fi
+
+
+}
+
+BackgroundMusicControls()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.apple.mediacontrold.plist >>/dev/null 2>&1
+launchctl load -w $daemon_base/com.apple.mediaremoted.alt.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.mediacontrold.plist >>/dev/null 2>&1
+launchctl unload -w $daemon_base/com.apple.mediaremoted.alt.plist >>/dev/null 2>&1
+else echo "Unknown argument for BackgroundMusicControls: $1";
+fi
+
+
+}
+
+FindMyDevice()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.apple.livetrace.plist >>/dev/null 2>&1
+launchctl load -w $daemon_base/com.apple.geod.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then 
+launchctl unload -w $daemon_base/com.apple.livetrace.plist >>/dev/null 2>&1
+launchctl unload -w $daemon_base/com.apple.geod.plist >>/dev/null 2>&1
+else echo "Unknown argument for FindMyDevice: $1";
+fi
+
+}
+
+
+
+AirPlay()
+{
+if [[ "$1" == "enable" ]];
+then
+launchctl load -w $daemon_base/com.apple.airplaydiagnostics.server.ios.plist >>/dev/null 2>&1
+elif [[ "$1" == "disable" ]];
+then
+launchctl unload -w $daemon_base/com.apple.airplaydiagnostics.server.ios.plist >>/dev/null 2>&1
+else echo "Unknown argument for AirPlay: $1"
+fi
+
+}
+
+ResetFolders()
+{
+if [[ "$1" == "enable" ]];
+then
+if [ -a "/private/var/mobile/Library/Preferences/springboardFolderStash" ]; then
+rm -f -r "/private/var/mobile/Library/Preferences/springboardFolderStash"
+fi
+
+rm -r -f /Applications/com.springboard.folder*
+
+mkdir /private/var/mobile/Library/Preferences/springboardFolderStash
+
+for i in {1..50}
+
+do
+
+  mkdir /private/var/mobile/Library/Preferences/springboardFolderStash/com.springboard.folder$i.app
+
+  ln -s /private/var/mobile/Library/Preferences/springboardFolderStash/com.springboard.folder$i.app /Applications/com.springboard.folder$i.app
+
+done
+
+chmod -R 777 /private/var/mobile/Library/Preferences/springboardFolderStash
+
+plutil -key ResetFolders -0 /var/mobile/Library/Preferences/com.whited00r.configurator.plist >>/dev/null 2>&1
+else
+echo "Not destroying and resetting folder layout"
+fi
+}
+
+
+CellData(){
+
+if uname -m | grep "iPhone" >>/dev/null
+then
+if [[ "$1" == "enable" ]];
+then
+launchctl unload /System/Library/LaunchDaemons/com.apple.CommCenter.plist
+launchctl load /System/Library/LaunchDaemons/com.apple.CommCenter.plist
+chown root:wheel /System/Library/LaunchDaemons/com.whited00r.celldata.plist
+chmod 644 /System/Library/LaunchDaemons/com.whited00r.celldata.plist
+launchctl unload -w /System/Library/LaunchDaemons/com.whited00r.celldata.plist
+rm -f /tmp/dataoff
+elif [[ "$1" == "disable" ]];
+then
+ifconfig pdp_ip0 127.0.0.1 127.0.0.1
+touch /tmp/dataoff
+chown root:wheel /System/Library/LaunchDaemons/com.whited00r.celldata.plist
+chmod 644 /System/Library/LaunchDaemons/com.whited00r.celldata.plist
+launchctl load -w /System/Library/LaunchDaemons/com.whited00r.celldata.plist
+else echo "Unknown argument for CellData: $1";
+fi
+else
+launchctl unload -w /System/Library/LaunchDaemons/com.whited00r.celldata.plist
+fi
+
+
+}
+
+
+
+KeyBuzz(){
+if [[ "$1" == "enabled" ]];
+then
+if [[ -f "/var/mobile/Whited00r/resources/Configurator/KeyBuzz.plist" ]];
+then
+buzzValue=$(plutil -key Buzz /var/mobile/Whited00r/resources/Configurator/KeyBuzz.plist);
+plutil -key KeyPressed -value "$buzzValue" /System/Library/PrivateFrameworks/Celestial.framework/SystemSoundBehaviour.plist;
+
+fi
+elif [[ "$1" == "disabled" ]];
+then
+if [[ -f "/var/mobile/Whited00r/resources/Configurator/KeyBuzz.plist" ]];
+then
+buzzValue=$(plutil -key Normal /var/mobile/Whited00r/resources/Configurator/KeyBuzz.plist);
+plutil -key KeyPressed -value "$buzzValue" /System/Library/PrivateFrameworks/Celestial.framework/SystemSoundBehaviour.plist;
+
+fi
+else echo "Unknown argument for KeyBuzz: $1";
+fi
+
+
+}
+
+
+ringtone_mover()
+{
+if [[ "$1" == "enable" ]];
+then
+if [[ ! -L /private/var/Ringtones && ! -d /private/var/Ringtones ]];
+then
+echo "Moving rigtones from system partition"
+cp -R -p /Library/Ringtones /private/var/Ringtones
+rm -rf /Library/Ringtones
+ln -s /private/var/Ringtones /Library/Ringtones
+echo "Done moving ringtones"
+fi
+elif [[ "$1" == "disable" ]];
+then 
+echo "Restoring ringtones"
+if [[ -L /private/var/Ringtones || -d /private/var/Ringtones ]];
+then
+rm -rf /Library/Ringtones
+mv /private/var/Ringtones /Library/Ringtones
+echo "Done restoring ringtones"
+else echo "No ringtones to move back to the system partition"
+fi
+else echo "Unknown argument for Ringtone mover: $1";
+fi
+
+}
+
+
+language_remover()
+{
+
+if [[ "$1" == "enable" ]];
+  then
+warningTitle=$(plutil -key LANGREMOVE_WARNING_TITLE "$langFile")
+warningBody=$(plutil -key LANGREMOVE_WARNING_BODY "$langFile")
+warningAccept=$(plutil -key LANGREMOVE_WARNING_ACCEPT "$langFile")
+warningCancel=$(plutil -key LANGREMOVE_WARNING_CANCEL "$langFile")
+runningLabel=$(plutil -key LANGREMOVE_RUNNING_LABEL "$langFile")
+sbalert -t "$warningTitle" -m "$warningBody" -d "$warningAccept" -o "$warningCancel"   
+#Would LOVE to have a GUI, but that's not an option for now... Of course, I could remove every language other than what the device is currently on, but that's a little iffy... I will leave this as an option for english only users :)
+#sbalert -t "WARNING" -m "This will remove ALL language packs except English and Japanese. If you need to use any other language, please hit \"Abort\" now." -d "Continue" -o "Abort"
+result="$?"
+if [[ "$result" == "0" ]];
+then
+
+sbalert -m "$runningLabel" -d "" &
+lang_alert="$!"
+find / | grep -E lproj$ | grep -vEi "ja|English|\/en" | while read lang; do rm -rf "$lang"; done
+kill $lang_alert
+echo
+echo "Done removing language packs"
+else echo "Language pack removal aborted";
+fi
+fi
+plutil -key language_remover -0 /var/mobile/Library/Preferences/com.whited00r.configurator.plist >>/dev/null 2>&1
+}
+
+nike_remover()
+{
+
+if [[ "$1" == "enable" ]];
+then
+
+if [[ -d /Applications/Nike.app ]];
+then 
+
+warningTitle=$(plutil -key NIKEREMOVE_WARNING_TITLE "$langFile")
+warningBody=$(plutil -key NIKEREMOVE_WARNING_BODY "$langFile")
+warningAccept=$(plutil -key NIKEREMOVE_WARNING_ACCEPT "$langFile")
+warningCancel=$(plutil -key NIKEREMOVE_WARNING_CANCEL "$langFile")
+sbalert -t "$warningTitle" -m "$warningBody" -d "$warningAccept" -a "$warningCancel"
+answer="$?"
+if [[ "$answer" == "0" ]];
+then 
+rm -rf /System/Library/AccessibilityBundles/SportsTrainerFramework.axbundle;
+rm -rf /System/Library/AccessibilityBundles/Nike.axbundle;
+rm -rf /System/Library/PrivateFrameworks/SportsTrainer.framework ;
+rm -rf /System/Library/PrivateFrameworks/SportsVoices.framework;
+rm -rf /System/Library/PrivateFrameworks/SportsWorkout.framework;
+rm -rf /Applications/Nike.app
+plutil -type json -key capabilities -key nike-ipod -0 /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null 2>&1
+else echo "Not removing NIKE resources";
+fi
+else echo "No NIKE resources to be found";
+fi
+fi
+}
+
+
+font_mover()
+{
+if [[ "$1" == "enable" ]];
+then
+if [[ ! -L /private/var/Fonts && ! -d /private/var/Fonts ]];
+then
+echo "Moving fonts from system partition"
+cp -R -p /System/Library/Fonts /private/var/Fonts
+rm -rf /System/Library/Fonts
+ln -s /private/var/Fonts /System/Library/Fonts
+echo "Done moving fonts"
+fi
+elif [[ "$1" == "disable" ]];
+then
+echo "Restoring fonts"
+if [[ -L /private/var/Fonts || -d /private/var/Fonts ]];
+then
+rm -rf /System/Library/Fonts
+mv /private/var/Fonts /System/Library/Fonts
+echo "Done restoring fonts"
+else echo "There were no fonts to move back."
+fi
+else echo "Unknown argument for Font mover: $1";
+fi
+}
+
+audio_mover()
+{
+
+if [[ "$1" == "enable" ]];
+then
+if [[ ! -L /private/var/Audio && ! -L /private/var/SysAudio ]];
+then
+echo "Moving audio folder"
+cp -R -p /Library/Audio /private/var/Audio
+cp -R -p /System/Library/Audio /private/var/SysAudio
+rm -rf /System/Library/Audio
+ln -s /private/var/SysAudio /System/Library/Audio
+rm -rf /Library/Audio
+ln -s /private/var/Audio /Library/Audio
+echo "Done moving audio folder"
+fi
+elif [[ "$1" == "disable" ]];
+then
+echo "Restoring audio folder"
+if [[ -L /private/var/Audio && -L /private/var/SysAudio ]];
+then
+rm -rf /Library/Audio
+rm -rf /System/Library/Audio
+mv /private/var/SysAudio /System/Library/Audio
+mv /private/var/Audio /Library/Audio
+rm -rf /private/var/Audio
+rm -rf /private/var/SysAudio
+echo "Done restoring audio folder"
+else echo "There were no audio folders/files to restore";
+fi
+else echo "Unknown argument for Audio: $1";
+fi
+}
+
+dictionary_mover()
+{
+if [[ "$1" == "enable" ]];
+then
+if [[ -d /Library/Dictionaries ]];
+then
+if [[ ! -L /private/var/Dictionaries ]];
+then
+echo "Moving dictionaries"
+cp -R -p /Library/Dictionaries /private/var/Dictionaries
+rm -rf /Library/Dictionaries
+ln -s /private/var/Dictionaries /Library/Dictionaries
+echo "Done moving dictionaries"
+else echo "No dictionaries to move";
+fi
+fi
+elif [[ "$1" == "disable" ]];
+then
+if [[ -L /private/var/Dictionaries ]];
+then
+echo "Restoring dictionaries"
+rm -rf /Library/Dictionaries
+mv /private/var/Dictionaries /Library/Dictionaries
+rm -rf /private/var/Dictionaries
+echo "Done restoring dictionaries"
+else echo "No dictionaries to restore";
+fi
+else echo "Unknown argument for Dictionary: $1"
+fi
+
+}
+
+Unibar(){
+  if [[ $1 == "enable" ]];
+  then
+  if [[ -f /Library/MobileSubstrate/DynamicLibraries/UnifiedSafari.disabled ]];
+    then mv /Library/MobileSubstrate/DynamicLibraries/UnifiedSafari.disabled /Library/MobileSubstrate/DynamicLibraries/UnifiedSafari.dylib;
+  fi
+elif [[ $1 == "disable" ]];
+  then
+  if [[ -f /Library/MobileSubstrate/DynamicLibraries/UnifiedSafari.dylib ]];
+    then mv /Library/MobileSubstrate/DynamicLibraries/UnifiedSafari.dylib /Library/MobileSubstrate/DynamicLibraries/UnifiedSafari.disabled;
+  fi
+else echo "Unknown argument for Unibar: $1";
+fi
+}
+
+ControlCenter(){
+if [[ $1 == "enable" ]];
+  then 
+    if [[ -f /Library/MobileSubstrate/DynamicLibraries/ControlCenter.disabled ]];
+      then mv /Library/MobileSubstrate/DynamicLibraries/ControlCenter.disabled /Library/MobileSubstrate/DynamicLibraries/ControlCenter.dylib;
+    fi
+elif [[ $1 == "disable" ]];
+  then 
+    if [[ -f /Library/MobileSubstrate/DynamicLibraries/ControlCenter.dylib ]];
+      then mv /Library/MobileSubstrate/DynamicLibraries/ControlCenter.dylib /Library/MobileSubstrate/DynamicLibraries/ControlCenter.disabled;
+    fi
+  else echo "Unknown argument for ControlCenter: $1";
+fi
+
+
+}
+
+AssistiveTouch(){
+if [[ $1 == "enable" ]];
+  then 
+    if [[ -f /Library/MobileSubstrate/DynamicLibraries/AssistiveTouch.disabled ]];
+      then mv /Library/MobileSubstrate/DynamicLibraries/AssistiveTouch.disabled /Library/MobileSubstrate/DynamicLibraries/AssistiveTouch.dylib;
+    fi
+elif [[ $1 == "disable" ]];
+  then 
+    if [[ -f /Library/MobileSubstrate/DynamicLibraries/AssistiveTouch.dylib ]];
+      then mv /Library/MobileSubstrate/DynamicLibraries/AssistiveTouch.dylib /Library/MobileSubstrate/DynamicLibraries/AssistiveTouch.disabled;
+    fi
+  else echo "Unknown argument for AssistiveTouch: $1";
+fi
+
+
+}
+
+
+clean_up()
+{
+if [[ "$command" == "NoRespring" ]];
+then echo "Finished enabling all configurator options";
+else
+killall SpringBoard
+fi
+}
+
+go_go_whited00r()
+{
+plutil -keys /var/mobile/Library/Preferences/com.whited00r.configurator.plist | while read key; do
+if [[ `plutil -key $key /var/mobile/Library/Preferences/com.whited00r.configurator.plist` == "1" ]];
+then $key enable;
+elif [[ `plutil -key $key /var/mobile/Library/Preferences/com.whited00r.configurator.plist` == "0" ]];
+then $key disable;
+else $key `plutil -key $key /var/mobile/Library/Preferences/com.whited00r.configurator.plist`;
+fi
+done
+
+echo "Checking for modules"
+
+if [[ -d "/var/mobile/Library/Configurator" ]];
+  then
+ls "/var/mobile/Library/Configurator" | while read bundle; do
+
+if [[ -f "/var/mobile/Library/Configurator/$bundle/configurator" ]];
+then
+chmod 775 "/var/mobile/Library/Configurator/$bundle/configurator"
+
+if [[  -f "/var/mobile/Library/Preferences/$bundle.plist" ]];
+then
+
+plutil -keys /var/mobile/Library/Preferences/$bundle.plist | while read key; do
+
+if [[ `plutil -key $key /var/mobile/Library/Preferences/$bundle.plist` == "1" ]];
+then /var/mobile/Library/Configurator/$bundle/configurator $key enable;
+elif [[ `plutil -key $key /var/mobile/Library/Preferences/$bundle.plist` == "0" ]];
+then /var/mobile/Library/Configurator/$bundle/configurator $key disable;
+else /var/mobile/Library/Configurator/$bundle/configurator $key `plutil -key $key /var/mobile/Library/Preferences/$bundle.plist`;
+fi
+
+done
+
+else
+#Didn't have any preference plist, running it anyway in hopes it's okay to do so :P
+/var/mobile/Library/Configurator/$bundle/configurator 
+fi
+fi
+
+done
+fi
+
+echo "Cleaning image caches"
+rm -rf /var/mobile/Library/Caches/com.apple.springboard.sharedimagecache/Persistent
+
+
+
+echo "Cleaned image caches"
+clean_up
+}
+
+
+#Good to do, to make sure it isn't restored from a backup. I mean current versions restoring is okay ish...
+checkVersion(){
+if [[ -f /var/mobile/Library/Preferences/com.whited00r.version.plist ]];
+then
+if [[  ! `plutil -key version /var/mobile/Library/Preferences/com.whited00r.version.plist` == "7.0" || ! -f "/var/`plutil -key creationDate /var/mobile/Library/Preferences/com.whited00r.version.plist`" ]];
+  then sbalert -t "Warning" -m "You appear to have restored from a backup in iTunes, which can cause many many issues. Please restore cleanly before asking for troubleshooting support on the forums" -d "Okay"; killall SpringBoard; exit;
+fi
+else
+  creationDate=$(date +"%d-%m_%H:%M" | openssl dgst -sha1 -hmac "MonthDayAndTime");
+  plutil -create /var/mobile/Library/Preferences/com.whited00r.version.plist;
+  chmod 0644 /var/mobile/Library/Preferences/com.whited00r.version.plist;
+  chown mobile:mobile /var/mobile/Library/Preferences/com.whited00r.version.plist
+  plutil -key creationDate -value "$creationDate" /var/mobile/Library/Preferences/com.whited00r.version.plist
+  touch "/var/$creationDate"
+  plutil -key version -value 7.0 /var/mobile/Library/Preferences/com.whited00r.version.plist
+fi
+}
+
+checkVersion
+
+if [[ "$command" == "NoRespring" ]];
+then echo "Enabling all configurator things..."
+else
+check_license
+#Now, going native, no need for this little line :)
+#sbalert -t "Running" -m "Applying settings. The device will respring when done. This could take a while." -d ""&
+fi
+
+if [[ "$command" == "manual" ]];
+then 
+if [[ -z "$2" || -z "$3" ]];
+then sbalert -t "Configurator Error" -m "Looks like a configurator manual config didn't go down so well..."
+exit
+fi
+
+"$2" "$3"
+exit
+fi
+go_go_whited00r

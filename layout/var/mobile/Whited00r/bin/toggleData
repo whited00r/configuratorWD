@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#Well well well, what do we have here?
+if [[ `plutil -key CellData /var/mobile/Library/Preferences/com.whited00r.configurator.plist` == "1" ]];
+then /var/mobile/Whited00r/bin/configurator manual CellData enable;
+elif [[ `plutil -key CellData /var/mobile/Library/Preferences/com.whited00r.configurator.plist` == "0" ]];
+then /var/mobile/Whited00r/bin/configurator manual CellData disable;
+fi
+

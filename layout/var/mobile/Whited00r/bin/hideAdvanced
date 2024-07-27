@@ -1,0 +1,14 @@
+#!/bin/bash
+sys_plist=$(uname -i)
+base=/var/mobile/Whited00r
+
+
+plutil -type json -key capabilities -key advancedConfig -remove /System/Library/CoreServices/SpringBoard.app/$sys_plist.plist >>/dev/null
+chmod 4755 $base/bin/rootme
+chown root:wheel $base/bin/rootme
+chmod 775 $base/bin/rootthis
+chmod 775 $base/bin/root-check
+cp $base/bin/root-check /usr/bin/root-check
+chmod 775 /usr/bin/root-check
+#killall SpringBoard #Hopefully not needed now?
+

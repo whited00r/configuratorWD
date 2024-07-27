@@ -1,0 +1,10 @@
+#!/bin/bash
+echo
+if [ `id -u` != 0 ]; then sbalert -t "Error" -m "Carrier bundle image deletion module not running as root"; exit 0; fi
+
+
+find "/private/var/mobile/Library/Carrier Bundle.bundle" ! -name "*.plist" -printf '%f\n' -delete; # So as not to freak out the configurator, if it would.
+
+
+echo ""
+echo "Please Reboot"

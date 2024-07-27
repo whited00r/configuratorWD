@@ -1,0 +1,24 @@
+#!/bin/bash
+base=/var/mobile/Whited00r
+
+#Permissions for setuid to work.
+chown root:wheel /var/mobile/Whited00r/bin/configuratorRoot
+chmod 4755 /var/mobile/Whited00r/bin/configuratorRoot
+chown root:wheel /var/mobile/Whited00r/bin/activateAdvancedRoot
+chmod 4755 /var/mobile/Whited00r/bin/activateAdvancedRoot
+chmod 775 /var/mobile/Whited00r/bin/activateAdvanced
+chown mobile:mobile /var/mobile/Library/Preferences/com.whited00r.configurator.plist
+chmod 775 /var/mobile/Library/Preferences/com.whited00r.configurator.plist
+
+chmod 4755 $base/bin/rootme
+chown root:wheel $base/bin/rootme
+chmod 775 $base/bin/rootthis
+chmod 775 $base/bin/root-check
+cp $base/bin/root-check /usr/bin/root-check
+chmod 775 /usr/bin/root-check
+
+#Cell data daemon permissions :Preferences
+chown root:wheel /System/Library/LaunchDaemons/com.whited00r.celldata.plist
+chmod 644 /System/Library/LaunchDaemons/com.whited00r.celldata.plist
+
+launchctl unload -w /System/Library/LaunchDaemons/com.whited00r.celldata.plist

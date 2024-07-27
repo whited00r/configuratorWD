@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Advanced</key>
+	<string>Advanced</string>
+	<key>Features</key>
+	<string>Features</string>
+	<key>Visual</key>
+	<string>Visual</string>
+	<key>Daemons</key>
+	<string>Daemons</string>
+	<key>INSTRUCTION_LABEL</key>
+	<string>Swipe to access different configuration panels, or tap the quick shortcuts below.</string>
+	<key>APPLY_LABEL</key>
+	<string>Apply Changes</string>
+	<key>WALLPAPER_LABEL</key>
+	<string>Wallpaper</string>
+	<key>FOLDERS_LABEL</key>
+	<string>Folders</string>
+	<key>BACKGROUNDER_LABEL</key>
+	<string>Backgrounder</string>
+	<key>MULTITASKING_LABEL</key>
+	<string>App Switcher</string>
+	<key>VIDEOSWITCH_LABEL</key>
+	<string>Video Switch</string>
+	<key>IOS_MENU_LABEL</key>
+	<string>iOS6 Share Menu</string>
+	<key>SARA_LABEL</key>
+	<string>Siri (Sara)</string>
+	<key>CAMGRABBER_LABEL</key>
+	<string>Camera Grabber</string>
+	<key>BRUCE_LABEL</key>
+	<string>Banner Notifications</string>
+	<key>ICONSHADOWS_LABEL</key>
+	<string>Icon Shadows</string>
+	<key>FOLDEREFFECTS_LABEL</key>
+	<string>Folder Effects</string>
+	<key>MINIMIZEBUTTON_LABEL</key>
+	<string>Minimize Button</string>
+	<key>MULTITASKINGEFFECTS_LABEL</key>
+	<string>Multitasking Effects</string>
+	<key>VIDEOBUFFERFIX_LABEL</key>
+	<string>Video Buffer Fix</string>
+	<key>ADBLOCK_LABEL</key>
+	<string>AdBlock</string>
+	<key>CYDIAAUTOINSTALL_LABEL</key>
+	<string>Cydia AutoInstall</string>
+	<key>SPOTLIGHT_LABEL</key>
+	<string>Spotlight Search</string>
+	<key>ADMINLITE_LABEL</key>
+	<string>Kill Frozen Apps</string>
+	<key>COPYPASTE_LABEL</key>
+	<string>Copy/Paste</string>
+	<key>ACCESSORIES_LABEL</key>
+	<string>Accessories</string>
+	<key>ALBUMARTWORK_LABEL</key>
+	<string>Album Artwork</string>
+	<key>VOICECONTROL_LABEL</key>
+	<string>Voice Control</string>
+	<key>NOTIFICATIONS_LABEL</key>
+	<string>Push Notifications</string>
+	<key>SYNC_LABEL</key>
+	<string>Exchange</string>
+	<key>OBLITERATION_LABEL</key>
+	<string>Obliteration</string>
+	<key>SIM_LABEL</key>
+	<string>SIM Card Import</string>
+	<key>VPN_LABEL</key>
+	<string>VPN Support</string>
+	<key>TETHERING_LABEL</key>
+	<string>Tethering</string>
+	<key>MOBILEME_LABEL</key>
+	<string>MobileMe</string>
+	<key>APPSTORECHECK_LABEL</key>
+	<string>App Update Checks</string>
+	<key>WARNING_LABEL</key>
+	<string>Disabling any of the below may have adverse effects on your device.</string>
+	<key>ITUNESCLOUD_LABEL</key>
+	<string>iTunes Cloud/Home Sharing</string>
+	<key>PROFILEJANITOR_LABEL</key>
+	<string>Profile Janitor</string>
+	<key>BLUETOOTH_LABEL</key>
+	<string>BlueTooth</string>
+	<key>LOCATION_LABEL</key>
+	<string>Location Services</string>
+	<key>COMMCENTER_LABEL</key>
+	<string>Cell Services</string>
+	<key>SMOOTHANIMATIONS_LABEL</key>
+	<string>Smooth Animations</string>
+	<key>WIFILOGS_LABEL</key>
+	<string>WiFi Logs (Wapic)</string>
+	<key>3RDPARTYMUSIC_LABEL</key>
+	<string>3rd Party Music Controls</string>
+	<key>BACKGROUNDMUSIC_LABEL</key>
+	<string>Background Music Controls</string>
+	<key>MIDI_LABEL</key>
+	<string>Midi</string>
+	<key>RESET_FOLDERS_LABEL</key>
+	<string>Reset Folders</string>
+	<key>ADVANCED_UNLOCK</key>
+	<string>Unlock Advanced Config</string>
+	<key>ADVANCED_WARNING_TITLE</key>
+	<string>WARNING</string>
+	<key>ADVANCED_WARNING_ACCEPT</key>
+	<string>Accept</string>
+	<key>ADVANCED_WARNING_CANCEL</key>
+	<string>Cancel</string>
+	<key>ADVANCED_WARNING_BODY</key>
+	<string>This will unlock advanced configuration features on your device. Some of these options may cause instability in your device and loss of features until enabled again. Please do not use this unless you know what you are doing, and are willing to take responsibility if something goes wrong. Support for these options is minimal at best. If all else fails, enable all of the options to see if that fixes your issues.</string>
+	<key>CELL_DATA_LABEL</key>
+	<string>Cell Data</string>
+	<key>DARKER_LS_BACKGROUND_LABEL</key>
+	<string>Darker LS background</string>
+	<key>iOS7_STYLE_LABEL</key>
+	<string>iOS7 Style</string>
+	<key>LS_BACKGROUND_BLUR_LABEL</key>
+	<string>LS background blur</string>
+	<key>NOTIFICATION_SETTINGS_LABEL</key>
+	<string>Notifications settings</string>
+	<key>LAUNCH_IMAGES_LABEL</key>
+	<string>Launch Images</string>
+	<key>LS_BOUNCE_LABEL</key>
+	<string>LS bounce</string>
+	<key>VISUAL_SETTINGS_LABEL</key>
+	<string>Visual settings</string>
+	<key>FEATURES_SETTINGS_LABEL</key>
+	<string>Features</string>
+	<key>KEY_BUZZ_LABEL</key>
+	<string>Haptic Keyboard</string>
+	<key>ADVANCED_ADVANCED_SETTINGS_LABEL</key>
+	<string>Beta toggles</string>
+	<key>ROUND_SWITCHES_LABEL</key>
+	<string>Round Switches</string>
+	<key>OKAY_BUTTON</key>
+	<string>Okay</string>
+	<key>WALLPAPER_POPUP</key>
+	<string>This is your homescreen and lockscreen background wallpaper. You can still have a lockscreen wallpaper with this disabled, but no homescreen wallpaper.</string>
+	<key>FOLDERS_POPUP</key>
+	<string>This is the folder feature of whited00r, that happens when you drag one icon over another, just like iOS4+. Disabling this feature will still leave the icons on your homescreen, but all the apps should be out of the folders.  When re-enabling this all the apps will go back into their old folders so you don't have to worry about redoing all the folders.</string>
+	<key>BACKGROUNDER_POPUP</key>
+	<string>Used for real multitasking with the manual multitasking app switcher option. Do not have enabled at the same time as Sara/Siri.</string>
+	<key>SARA_POPUP</key>
+	<string>The Siri replica/virtual assistant for whited00r that is activated by holding down the home button anywhere. 
+This conflicts with backgrounder, please only have one enabled at a time!</string>
+	<key>BANNER_POPUP</key>
+	<string>Finally, whited00r has banner notifications for iOS. This toggle enables/disables this feature.
+When disabled you will still get push notifications, but they will be the old 3.1.3 style notifications.</string>
+	<key>ICON_SHADOWS_POPUP</key>
+	<string>Icon shadows on the homescreen can be enabled by this toggle, although for speed and smoothness it is probably best not to have this enabled.</string>
+	<key>FOLDER_EFFECTS_POPUP</key>
+	<string>A nice little treat from the folders that has been in there for ages but never had a toggle for average users, is the fading of the homscreen when opening up a folder. This is disabled by default because it slows down the opening of folders, and might cause some low memory safemode crashes when opening/closing folders.</string>
+	<key>RESET_FOLDERS_POPUP</key>
+	<string>When you leave this switch on and apply the settings, it will reset your entire folder layout and reset permissions and ownerships as well. This can help fix some issues with folders, as well as save time in removing a lot of apps from folders or just removing the icons for them entirely.</string>
+	<key>LS_BOUNCE_POPUP</key>
+	<string>This toggle enables/disables a bounce on the lockscreen when you do not slide all the way to unlock the device or open the camera, as well as just when tapping on the screen (not music controls or volume slider).</string>
+	<key>MINIMIZE_POPUP</key>
+	<string>This toggles the minimize button in the manual multitasking tray which when used with backgrounder enabled sends the current app into the background rather than needing to hold down the home button to enable backgrounding for it</string>
+	<key>MULTITASKING_EFFECTS_POPUP</key>
+	<string>Enable/disable a fade effect when showing the manual app switcher.</string>
+	<key>LAUNCH_IMAGES_POPUP</key>
+	<string>This is the feature that when you close an app, it takes a snapshot of it to use as the launch image next time.  Kind of a quick feel to it for apps that load quickly.  When disabled, the apps will use the default loading images.</string>
+	<key>LS_BG_BLUR_POPUP</key>
+	<string>A feature of Bruce that blurs the background of the lockscreen when you receive a notification and have Banners notifications enabled.  This gives a slight pause for the first notification, but after that everything is just as fast as before.</string>
+	<key>IOS7_STYLE_NOTIFICATIONS_POPUP</key>
+	<string>This gives you the iOS7 style of banner notifications, rather than the iOS5 and iOS6 style.  Having this enabled also gives you more lines for the notification text.  Having this enabled also gives you an overlay on the lockscreen wallpaper.</string>
+	<key>DARKER_LS_BG_POPUP</key>
+	<string>Have a darker background overlay rather than a lighter one. I have found this looks better than the lighter one, but the choice is yours. </string>
+	<key>VIDEO_BUFFER_POPUP</key>
+	<string>Having this enabled reduces the quality of videos, thus improving the loading time of youtube and other internet videos.</string>
+	<key>CELL_DATA_POPUP</key>
+	<string>This toggle enables/disables the data connection from your SIM (doesn't touch the wifi or GPS/texting/calling).  When disabled, you will no longer have 3G, Edge, or GRPS data connection. You can still call and text, although MMS will not work.   Wifi and GPS will work the same as well. To enable it again, just toggle it back on and apply the settings.</string>
+	<key>AUTOINSTALL_POPUP</key>
+	<string>The auto install feature of Cydia that when .debs are placed in /var/root/Media/Cydia/Autoinstall and you reboot, it will install them (requiring another reboot for anything to take effect).  This can be disabled because of the .deb installer feature of the new App Time Machine. (Some prefer to use this though).</string>
+	<key>SPOTLIGHT_POPUP</key>
+	<string>Disabling this will stop the spotlight search results from loading, giving you a quicker device.  Please note that this does not hide the spotlight page as that would require a substrate</string>
+	<key>FROZEN_APPS_POPUP</key>
+	<string>This will stop the device from force quitting unresponsive apps.  Most people can get away without using this, but if you use a memory intensive game you may want to have this enabled to save a reboot to unfreeze the device.</string>
+	<key>COPYPASTE_POPUP</key>
+	<string>When disabled, you no longer will be able to have a working copy/paste (it will still show up, just no paste option).</string>
+	<key>ACCESSORIES_POPUP</key>
+	<string>With this disabled, you no longer will be able to use accessories like FM transmitters and iHome type devices that use the charging port. You can still charge, just not use them feature wise.</string>
+	<key>ALBUM_ARTWORK_POPUP</key>
+	<string>If this is disabled, you might not have any album art anymore (lockscreen and music app). You can still play music however, and you might get away with still having art (some people do, some people don't).</string>
+	<key>NOTIFICATIONS_POPUP</key>
+	<string>This is the push notification feature for the entire device. With this disabled, you will no longer receive push notifications (SMS and phone calls will still come through and alert you).</string>
+	<key>EXCHANGE_POPUP</key>
+	<string>Sync stuff with google/microsoft exchange</string>
+	<key>SIM_POPUP</key>
+	<string>Syncs contacts from the SIM card and vice versa. If disabled, you can't use this feature.</string>
+	<key>TETHERING_POPUP</key>
+	<string>This toggles the native tethering feature in iOS</string>
+	<key>VPN_POPUP</key>
+	<string>When disabled, you will no longer be able to use VPN features.</string>
+	<key>APP_UPDATE_CHECKS_POPUP</key>
+	<string>When disabled, you will no longer get automatic app update checks from the App Store (the badge on the app icon, and possibly the ability to use the Updates tab in the App Store). </string>
+	<key>PROFILE_JANITOR_POPUP</key>
+	<string>Has to do with trusted wifi networks, and warns you if a wifi connection is insecure or a web certificate is not trusted/out of date or invalid.</string>
+	<key>BLUETOOTH_POPUP</key>
+	<string>Disabling this disables the bluetooth function of the device. Before enabling bluetooth in the settings make sure this switch is ON.</string>
+	<key>LOCATION_POPUP</key>
+	<string>Flipping this switch to the off position will stop location services from working, you won't even get popups asking for location permissions anymore until you turn it back on.  GPS might not work when this is disabled either, so be warned!</string>
+	<key>COMMCENTER_POPUP</key>
+	<string>The entire cell phone functionality of the device, disabling this headshots your cell cervices, meaning no calls and no data.  Wifi, bluetooth, and location services (GPS) will still be usable when this is disabled, but still use at your own risk because there may be status bar bugs relating to this (says searching, unable to put in airplane mode and so on).</string>
+	<key>KEY_BUZZ_POPUP</key>
+	<string>This enables haptic response when typing. Make sure the device is not in silent mode for this to take effect.</string>
+	<key>SMOOTH_ANIMATIONS_POPUP</key>
+	<string>This attempts to force the app to wait for the launch animation to complete before launching an app.</string>
+	<key>ROUND_SWITCHES_POPUP</key>
+	<string>Beautiful rounded toggles in iOS 7 style. This will cause heavy CPU usage as the corners are rendered on the fly. Disable to get more speed back.</string>
+	<key>TAP_FOR_INFO</key>
+	<string>Tap on the text of a switch to get information about it</string>
+	<key>LOADING_LABEL</key>
+	<string>This may take a while, please be patient.</string>
+	<key>HIDE_ADVANCED_LABEL</key>
+	<string>Hide Advanced</string>
+	<key>LANGREMOVE_WARNING_TITLE</key>
+	<string>WARNING</string>
+	<key>LANGREMOVE_WARNING_BODY</key>
+	<string>This will remove ALL language packs except English and Japanese. If you need to use any other language, please hit Abort now.</string>
+	<key>LANGREMOVE_WARNING_ACCEPT</key>
+	<string>Continue</string>
+	<key>LANGREMOVE_WARNING_CANCEL</key>
+	<string>Abort</string>
+	<key>LANGREMOVE_RUNNING_LABEL</key>
+	<string>Removing languages... This could take a while.</string>
+	<key>NIKEREMOVE_WARNING_TITLE</key>
+	<string>WARNING</string>
+	<key>NIKEREMOVE_WARNING_BODY</key>
+	<string>Remove NIKE resources? This will remove NIKE from your system.</string>
+	<key>NIKEREMOVE_WARNING_ACCEPT</key>
+	<string>Continue</string>
+	<key>NIKEREMOVE_WARNING_CANCEL</key>
+	<string>Abort</string>
+	<key>RINGTONEMOVER_LABEL</key>
+	<string>RingTone Mover</string>
+	<key>RINGTONEMOVER_POPUP</key>
+	<string>Enabling this keeps ringtones in the mobile partition to free up system space</string>
+	<key>LANGUAGEREMOVER_LABEL</key>
+	<string>Language Remover</string>
+	<key>LANGUAGEREMOVER_POPUP</key>
+	<string>Enabling this will remove all languages except English and Japanese.</string>
+	<key>NIKEREMOVER_LABEL</key>
+	<string>Nike Remover</string>
+	<key>NIKEREMOVER_POPUP</key>
+	<string>Enabling this will free up system space by removing all resource files for Nike.</string>
+	<key>FONTMOVER_LABEL</key>
+	<string>Font Mover</string>
+	<key>FONTMOVER_POPUP</key>
+	<string>Enabling this will move fonts to the mobile partition to free up system space</string>
+	<key>AUDIOMOVER_LABEL</key>
+	<string>Audio Mover</string>
+	<key>AUDIOMOVER_POPUP</key>
+	<string>Enabling this will move system audio files to the mobile partition to free up system space</string>
+	<key>DICTIONARYMOVER_LABEL</key>
+	<string>Dictionary Mover</string>
+	<key>DICTIONARYMOVER_POPUP</key>
+	<string>Enabling this will move dictionaries to the mobile partition to free up system space</string>
+	<key>ICON_ANIMATION_LABEL</key>
+	<string>Unlock Animation</string>
+	<key>ICON_ANIMATION_POPUP</key>
+	<string>Enabling this will give your icons a slight *beta* attempt at an iOS 7 style animation on unlock.</string>
+	<key>ICON_LAUNCH_ANIMATION_LABEL</key>
+	<string>Icon Animation</string>
+	<key>ICON_LAUNCH_ANIMATION_POPUP</key>
+	<string>This attempts to provide a *beta* iOS 7 style app launch animation, zooming surrounding icons.</string>
+	<key>SNAPSHOT_LABEL</key>
+	<string>SnapShot Apps</string>
+	<key>SNAPSHOT_POPUP</key>
+	<string>This is what the recent app switcher uses, so the multitasking seems more fluid and visually appealing.</string>
+	<key>UNIBAR_LABEL</key>
+	<string>Safari Unibar</string>
+	<key>UNIBAR_POPUP</key>
+	<string>Unify the search and the address bar in Safari</string>
+	<key>iOS4FOLDERS_LABEL</key>
+	<string>iOS4 Folders</string>
+	<key>iOS4FOLDERS_POPUP</key>
+	<string>Use the old folder style instead of the blurred backgrounds and such.</string>
+	<key>CC_LABEL</key>
+	<string>Control Center</string>
+	<key>CC_POPUP</key>
+	<string>Enable or disable ControlCenter, activated via a swipe up from the bottom of the screen anywhere.</string>
+	<key>AT_LABEL</key>
+	<string>Assistive Touch</string>
+	<key>AT_POPUP</key>
+	<string>Useful for those with broken hardware buttons</string>
+</dict>
+</plist>

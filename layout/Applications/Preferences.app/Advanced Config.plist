@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>items</key>
+	<array>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Disabling any of these may have adverse effects on your device!</string>
+		</dict>
+
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.whited00r.configurator</string>
+			<key>key</key>
+			<string>iTunesCloud</string>
+			<key>label</key>
+			<string>Home sharing</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.whited00r.configurator</string>
+			<key>key</key>
+			<string>ProfileJanitor</string>
+			<key>label</key>
+			<string>Profile Janitor</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.whited00r.configurator</string>
+			<key>key</key>
+			<string>AirPrint</string>
+			<key>label</key>
+			<string>AirPrint</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.whited00r.configurator</string>
+			<key>key</key>
+			<string>BlueTooth</string>
+			<key>label</key>
+			<string>BlueTooth</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.whited00r.configurator</string>
+			<key>key</key>
+			<string>Location</string>
+			<key>label</key>
+			<string>Location services</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.whited00r.configurator</string>
+			<key>key</key>
+			<string>CommCenter</string>
+			<key>label</key>
+			<string>Cell Services</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.whited00r.configurator</string>
+			<key>key</key>
+			<string>SmoothAnimations</string>
+			<key>label</key>
+			<string>Smooth Animations</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.whited00r.configurator</string>
+			<key>key</key>
+			<string>Powerd</string>
+			<key>label</key>
+			<string>Powerd</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.whited00r.configurator</string>
+			<key>key</key>
+			<string>CameraConnector</string>
+			<key>label</key>
+			<string>Camera Connector</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.whited00r.configurator</string>
+			<key>key</key>
+			<string>Wapic</string>
+			<key>label</key>
+			<string>Wifi logs (Wapic)</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.whited00r.configurator</string>
+			<key>key</key>
+			<string>3rdPartyMusicControls</string>
+			<key>label</key>
+			<string>3rd Party Music Controls</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.whited00r.configurator</string>
+			<key>key</key>
+			<string>BackgroundMusicControls</string>
+			<key>label</key>
+			<string>Background Music Controls</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.whited00r.configurator</string>
+			<key>key</key>
+			<string>Midi</string>
+			<key>label</key>
+			<string>Midi Controller</string>
+		</dict>
+		</array>
+	<key>title</key>
+	<string>Advanced Config</string>
+</dict>
+</plist>

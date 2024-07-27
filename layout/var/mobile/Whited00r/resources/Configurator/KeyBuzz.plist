@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+<key>Buzz</key>
+	<dict>
+		<key>RingVibrateIgnore,SilentVibrateOff,RingerSwitchOff</key>
+		<array/>
+		<key>RingVibrateIgnore,SilentVibrateOn,RingerSwitchOff</key>
+		<array/>
+		<key>RingVibrateOff,SilentVibrateIgnore,RingerSwitchOn</key>
+		<array>
+			<string>Beep</string>
+			<string>Vibrate</string>
+		</array>
+		<key>RingVibrateOn,SilentVibrateIgnore,RingerSwitchOn</key>
+		<array>
+			<string>Beep</string>
+			<string>Vibrate</string>
+		</array>
+	</dict>
+
+<key>Normal</key>
+	<dict>
+		<key>RingVibrateIgnore,SilentVibrateIgnore,RingerSwitchOn</key>
+		<array>
+			<string>Beep</string>
+		</array>
+		<key>RingVibrateIgnore,SilentVibrateIgnore,RingerSwitchOff</key>
+		<array>
+		</array>
+	</dict>
+
+</dict>
+</plist>

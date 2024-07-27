@@ -1,0 +1,9 @@
+#!/bin/bash
+
+
+path=`plutil -key Path /var/mobile/Library/Preferences/com.whited00r.rootthis.plist`
+argument=`plutil -key Argument /var/mobile/Library/Preferences/com.whited00r.rootthis.plist`
+
+chmod 775 "$path"
+"$path" "$argument"
+exit

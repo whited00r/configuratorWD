@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ConnectedToPower</key>
+	<dict>
+		<key>OffDuration</key>
+		<real>0.100000</real>
+		<key>TotalDuration</key>
+		<real>1.000000</real>
+		<key>OnDuration</key>
+		<real>0.400000</real>
+		<key>Intensity</key>
+		<real>1.000000</real>
+	</dict>
+	<key>RingerSwitchIndication</key>
+	<dict>
+		<key>OffDuration</key>
+		<real>0.100000</real>
+		<key>TotalDuration</key>
+		<real>0.400000</real>
+		<key>OnDuration</key>
+		<real>0.300000</real>
+		<key>Intensity</key>
+		<real>1.000000</real>
+	</dict>
+	<key>JBL_Begin</key>
+	<dict>
+		<key>OffDuration</key>
+		<real>0.200000</real>
+		<key>TotalDuration</key>
+		<real>0.300000</real>
+		<key>OnDuration</key>
+		<real>0.100000</real>
+		<key>Intensity</key>
+		<real>1.000000</real>
+	</dict>
+	<key>Default</key>
+	<dict>
+		<key>OffDuration</key>
+		<real>0.100000</real>
+		<key>TotalDuration</key>
+		<real>0.500000</real>
+		<key>OnDuration</key>
+		<real>0.400000</real>
+		<key>Intensity</key>
+		<real>1.000000</real>
+	</dict>
+	<key>JBL_Cancel</key>
+	<dict>
+		<key>OffDuration</key>
+		<real>0.200000</real>
+		<key>TotalDuration</key>
+		<real>0.300000</real>
+		<key>OnDuration</key>
+		<real>0.100000</real>
+		<key>Intensity</key>
+		<real>1.000000</real>
+	</dict>
+</dict>
+</plist>

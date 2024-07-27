@@ -1,0 +1,87 @@
+#!/bin/bash
+
+
+
+help_function()
+{
+echo "rootthis"
+echo "For Whited00r <3"
+echo
+echo "This lets you just run a program as root."
+echo
+echo "-h    help"
+echo "-p    program"
+echo "-e    executable"
+echo "-a    argument"
+echo "-s    subprogram"
+echo
+echo "Usage:"
+echo "rootthis -p *ProgramName* -e */path/to/program* -a *Argument_To_Pass* -s (*subprogram*)"
+echo "-- *ProgramName* is the name of the program, for later use. 
+*/path/to/program* is the path to the program you wish to run as root.
+*Argument_To_Pass* is the argument you want to pass to your program.
+*subprogram* this is to tell the script whether or not it should run as a subprogram, or wait for the script to complete before doing anything else. "
+echo
+exit
+
+}
+
+
+if [[ "$1" == "-h" ]];
+	then help_function;
+fi
+
+program=
+path=
+argument=
+subprogram=
+
+while [ "$1" != "" ]; do
+    case $1 in
+        -p | --program )           shift
+                                program=$1
+                                ;;                  
+        -e | --executable )    shift
+                       path=$1
+                                ;;
+        -a | --argument )    shift
+                       argument=$1
+                             ;;
+        -s | --subprogram )    
+                       subprogram=sub
+                             ;;                                     
+        * )                     echo "Unknown argument $1. Run rootthis -h for more information"
+                                exit 1
+    esac
+    shift
+done
+
+#Catching empty arguments that are required.
+
+if [[ -z $program ]];
+	then program="Hi mom";
+elif [[ -z $path ]];
+	then echo "You need to specify a path..."; exit;
+elif [[ -z $argument ]];
+	then argument="Monkeys";
+fi
+
+
+#Writing values to a plist for reading later.
+if [[ ! -f /var/mobile/Library/Preferences/com.whited00r.rootthis.plist ]];
+then
+plutil -create /var/mobile/Library/Preferences/com.whited00r.rootthis.plist
+chown mobile:mobile /var/mobile/Library/Preferences/com.whited00r.rootthis.plist
+chmod 775 /var/mobile/Library/Preferences/com.whited00r.rootthis.plist
+fi
+
+plutil -key Program -value "$program" /var/mobile/Library/Preferences/com.whited00r.rootthis.plist
+plutil -key Path -value "$path" /var/mobile/Library/Preferences/com.whited00r.rootthis.plist
+plutil -key Argument -value "$argument" /var/mobile/Library/Preferences/com.whited00r.rootthis.plist
+
+#Actual executable.
+
+if [[ "$subprogram" == "sub" ]];
+   then "rootme &" ;
+   else /var/mobile/Whited00r/bin/rootme;
+fi
